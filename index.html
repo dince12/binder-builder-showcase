@@ -1,0 +1,607 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Binder Builder Showcase</title>
+    <meta name="robots" content="index,follow,max-image-preview:large" />
+    <meta
+      name="description"
+      content="Binder Builder is a multi-TCG workspace for building binder layouts, tracking owned cards, and sharing polished binder pages."
+    />
+    <style>
+      :root {
+        --bg: #08111d;
+        --bg-soft: #0f1a2a;
+        --panel: rgba(13, 23, 38, 0.78);
+        --panel-strong: rgba(17, 30, 48, 0.92);
+        --line: rgba(144, 205, 244, 0.18);
+        --text: #f4efe7;
+        --muted: #b8c5d6;
+        --glow: #83def3;
+        --accent: #f59f66;
+        --accent-soft: rgba(245, 159, 102, 0.16);
+        --shadow: 0 30px 80px rgba(0, 0, 0, 0.35);
+        --radius: 26px;
+        --max: 1180px;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        min-width: 320px;
+        color: var(--text);
+        background:
+          radial-gradient(circle at top left, rgba(131, 222, 243, 0.12), transparent 30%),
+          radial-gradient(circle at top right, rgba(245, 159, 102, 0.14), transparent 26%),
+          linear-gradient(180deg, #08111d 0%, #0a1421 35%, #09111b 100%);
+        font-family: "Avenir Next", "Trebuchet MS", sans-serif;
+        line-height: 1.6;
+      }
+
+      img {
+        display: block;
+        max-width: 100%;
+      }
+
+      a {
+        color: inherit;
+      }
+
+      .page-shell {
+        width: min(calc(100% - 32px), var(--max));
+        margin: 0 auto;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 8px 14px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.04);
+        font-size: 0.75rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--glow);
+      }
+
+      .hero {
+        padding: 32px 0 72px;
+      }
+
+      .hero-grid {
+        display: grid;
+        gap: 28px;
+        align-items: center;
+      }
+
+      .hero-copy,
+      .card,
+      .gallery-card,
+      .stat-card {
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background: var(--panel);
+        box-shadow: var(--shadow);
+        backdrop-filter: blur(16px);
+      }
+
+      .hero-copy {
+        padding: 28px;
+      }
+
+      h1,
+      h2,
+      h3 {
+        margin: 0;
+        font-family: Georgia, "Times New Roman", serif;
+        line-height: 1.08;
+        letter-spacing: -0.02em;
+      }
+
+      h1 {
+        margin-top: 20px;
+        font-size: clamp(2.8rem, 7vw, 5.5rem);
+      }
+
+      h2 {
+        font-size: clamp(2rem, 4vw, 3.1rem);
+      }
+
+      h3 {
+        font-size: 1.45rem;
+      }
+
+      .hero-copy p,
+      .section-intro,
+      .card p,
+      .roadmap p,
+      .footer-copy {
+        color: var(--muted);
+      }
+
+      .hero-copy p {
+        max-width: 60ch;
+        margin: 18px 0 0;
+        font-size: 1.06rem;
+      }
+
+      .actions,
+      .socials {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .actions {
+        margin-top: 26px;
+      }
+
+      .button,
+      .social-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 46px;
+        padding: 0 18px;
+        border-radius: 999px;
+        text-decoration: none;
+        transition:
+          transform 0.18s ease,
+          border-color 0.18s ease,
+          background 0.18s ease;
+      }
+
+      .button:hover,
+      .social-link:hover,
+      .gallery-card:hover,
+      .card:hover,
+      .stat-card:hover {
+        transform: translateY(-2px);
+      }
+
+      .button-primary {
+        background: linear-gradient(135deg, var(--glow), #d5fbff);
+        color: #08111d;
+        font-weight: 700;
+      }
+
+      .button-secondary,
+      .social-link {
+        border: 1px solid var(--line);
+        background: rgba(255, 255, 255, 0.04);
+      }
+
+      .socials {
+        margin-top: 18px;
+      }
+
+      .hero-visual {
+        overflow: hidden;
+        border: 1px solid var(--line);
+        border-radius: calc(var(--radius) + 8px);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.02));
+        box-shadow: var(--shadow);
+      }
+
+      .hero-visual img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+
+      .hero-note {
+        display: grid;
+        gap: 8px;
+        padding: 18px 20px;
+        border-top: 1px solid var(--line);
+        background: rgba(6, 11, 18, 0.72);
+      }
+
+      .hero-note strong {
+        font-size: 0.82rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--glow);
+      }
+
+      section {
+        padding: 0 0 70px;
+      }
+
+      .section-head {
+        display: grid;
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+
+      .features {
+        display: grid;
+        gap: 18px;
+      }
+
+      .card {
+        padding: 24px;
+      }
+
+      .card strong {
+        display: inline-flex;
+        margin-bottom: 12px;
+        color: var(--accent);
+        font-size: 0.86rem;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .card p {
+        margin: 14px 0 0;
+      }
+
+      .stats {
+        display: grid;
+        gap: 16px;
+      }
+
+      .stat-card {
+        padding: 22px;
+      }
+
+      .stat-card span {
+        display: block;
+        color: var(--glow);
+        font-size: 0.8rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+      }
+
+      .stat-card strong {
+        display: block;
+        margin-top: 8px;
+        font-size: 2rem;
+        font-family: Georgia, "Times New Roman", serif;
+      }
+
+      .stat-card p {
+        margin: 10px 0 0;
+        color: var(--muted);
+      }
+
+      .gallery {
+        display: grid;
+        gap: 18px;
+      }
+
+      .gallery-card {
+        overflow: hidden;
+      }
+
+      .gallery-card img {
+        width: 100%;
+        aspect-ratio: 16 / 10;
+        object-fit: cover;
+        background: rgba(255, 255, 255, 0.03);
+      }
+
+      .gallery-copy {
+        padding: 18px 18px 20px;
+      }
+
+      .gallery-copy p {
+        margin: 10px 0 0;
+        color: var(--muted);
+      }
+
+      .games {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 20px;
+      }
+
+      .pill {
+        padding: 10px 14px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        background: rgba(255, 255, 255, 0.04);
+        color: var(--text);
+      }
+
+      .roadmap {
+        display: grid;
+        gap: 18px;
+      }
+
+      .roadmap ul {
+        margin: 0;
+        padding-left: 22px;
+        color: var(--muted);
+      }
+
+      .roadmap li + li {
+        margin-top: 10px;
+      }
+
+      footer {
+        padding: 10px 0 60px;
+      }
+
+      .footer-card {
+        padding: 26px;
+        border: 1px solid var(--line);
+        border-radius: var(--radius);
+        background:
+          linear-gradient(135deg, rgba(131, 222, 243, 0.14), transparent 40%),
+          linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.03));
+        box-shadow: var(--shadow);
+      }
+
+      .footer-copy {
+        margin: 12px 0 22px;
+        max-width: 54ch;
+      }
+
+      @media (min-width: 860px) {
+        .hero-grid {
+          grid-template-columns: minmax(0, 1.08fr) minmax(360px, 0.92fr);
+        }
+
+        .features {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .stats {
+          grid-template-columns: repeat(3, minmax(0, 1fr));
+        }
+
+        .gallery {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .roadmap {
+          grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+          align-items: start;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page-shell">
+      <section class="hero">
+        <div class="hero-grid">
+          <div class="hero-copy">
+            <div class="eyebrow">Binder Builder Showcase</div>
+            <h1>Build binder pages that look worth sharing.</h1>
+            <p>
+              Binder Builder is a multi-TCG workspace for building binder layouts,
+              tracking owned cards inside set archives, and publishing polished pages
+              for the community. Explore the live product at
+              <a href="https://binder-builder.co.uk">binder-builder.co.uk</a>.
+            </p>
+            <div class="actions">
+              <a class="button button-primary" href="https://binder-builder.co.uk" target="_blank" rel="noopener">
+                Visit binder-builder.co.uk
+              </a>
+              <a class="button button-secondary" href="#features">Explore the feature set</a>
+            </div>
+            <div class="socials">
+              <a class="social-link" href="https://www.tiktok.com/@binder.builder.tcg" target="_blank" rel="noopener">
+                TikTok: @binder.builder.tcg
+              </a>
+              <a class="social-link" href="https://www.instagram.com/binder.builder/" target="_blank" rel="noopener">
+                Instagram: @binder.builder
+              </a>
+            </div>
+          </div>
+          <div class="hero-visual">
+            <img src="img.png" alt="Binder Builder homepage and showcase screen" />
+            <div class="hero-note">
+              <strong>Hero Screenshot</strong>
+              <span>Use this slot to lead with the most polished product view on the GitHub Pages site.</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="features">
+        <div class="section-head">
+          <div class="eyebrow">What It Offers</div>
+          <h2>A binder-first product, not just a card list.</h2>
+          <p class="section-intro">
+            The live codebase is centered on visual binder building, owned-card
+            tracking inside set archives, and public sharing across multiple TCG hubs.
+          </p>
+        </div>
+        <div class="features">
+          <article class="card">
+            <strong>Visual Binder Building</strong>
+            <h3>Search cards, place them into slots, and build complete pages.</h3>
+            <p>
+              The builder supports multi-page layouts and variable grid sizes, so the
+              same tool works for clean collection pages and more curated showcase
+              spreads.
+            </p>
+          </article>
+          <article class="card">
+            <strong>Flexible Layouts</strong>
+            <h3>Change pocket sizing, move between pages, and build connected-art spreads.</h3>
+            <p>
+              Binder Builder is designed around presentation, which makes the finished
+              pages feel intentional instead of just auto-filled.
+            </p>
+          </article>
+          <article class="card">
+            <strong>Styling And Uploads</strong>
+            <h3>Custom names, backgrounds, patterns, background images, and slot images.</h3>
+            <p>
+              That gives collectors room to build themed pages and make each binder
+              feel like a display piece.
+            </p>
+          </article>
+          <article class="card">
+            <strong>Save And Reopen</strong>
+            <h3>Signed-in users can keep working drafts and return to them later.</h3>
+            <p>
+              The account workspace turns binder building into an ongoing process
+              instead of a one-session tool.
+            </p>
+          </article>
+          <article class="card">
+            <strong>Shareable Binders</strong>
+            <h3>Publish pages into public galleries with generated share links and previews.</h3>
+            <p>
+              Shared binders have dedicated detail pages and game-specific archive
+              pages, which gives the product a clear community layer.
+            </p>
+          </article>
+          <article class="card">
+            <strong>Owned-Card Tracking</strong>
+            <h3>Track cards inside set archives and watch completion progress move.</h3>
+            <p>
+              Users can browse sets, search within a set, filter by rarity, and mark
+              cards as owned to keep a live view of progress over time.
+            </p>
+          </article>
+        </div>
+        <div class="games" aria-label="Supported TCG hubs">
+          <span class="pill">Pokemon</span>
+          <span class="pill">Magic: The Gathering</span>
+          <span class="pill">One Piece</span>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div class="eyebrow">Codebase Snapshot</div>
+          <h2>Verified from the local data files.</h2>
+          <p class="section-intro">
+            These counts were checked from the project data on April 7, 2026, rather
+            than copied from older marketing copy.
+          </p>
+        </div>
+        <div class="stats">
+          <article class="stat-card">
+            <span>Pokemon</span>
+            <strong>172 sets</strong>
+            <p>20,202 cards in the current local dataset.</p>
+          </article>
+          <article class="stat-card">
+            <span>Magic</span>
+            <strong>689 sets</strong>
+            <p>99,479 cards in the current local dataset.</p>
+          </article>
+          <article class="stat-card">
+            <span>One Piece</span>
+            <strong>48 sets</strong>
+            <p>3,626 cards in the current local dataset.</p>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <div class="eyebrow">Gallery</div>
+          <h2>Suggested GitHub Pages showcase shots.</h2>
+          <p class="section-intro">
+            The existing screenshots already map well to a static landing page. These
+            cards mirror the image highlights from the README.
+          </p>
+        </div>
+        <div class="gallery">
+          <article class="gallery-card">
+            <img src="img_1.png" alt="Binder Builder interface showing search and layout building" />
+            <div class="gallery-copy">
+              <h3>Main builder view</h3>
+              <p>Best used to show card search on one side and a near-finished binder page on the other.</p>
+            </div>
+          </article>
+          <article class="gallery-card">
+            <img src="img_2.png" alt="Shared binder gallery and published binder previews" />
+            <div class="gallery-copy">
+              <h3>Community binder sharing</h3>
+              <p>Use this area to prove the public gallery and preview system are already part of the product.</p>
+            </div>
+          </article>
+          <article class="gallery-card">
+            <img src="img_3.png" alt="Binder Builder additional showcase layout" />
+            <div class="gallery-copy">
+              <h3>Layout and styling depth</h3>
+              <p>This slot works well for a page that shows the product as a creative layout tool, not only a tracker.</p>
+            </div>
+          </article>
+          <article class="gallery-card">
+            <img src="img_4.png" alt="Set viewer with owned-card tracking and progress" />
+            <div class="gallery-copy">
+              <h3>Set tracking and completion</h3>
+              <p>Use this shot to anchor the tracking story with owned counts, progress, and searchable archive views.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section>
+        <div class="roadmap">
+          <div>
+            <div class="eyebrow">Positioning</div>
+            <h2>Why this story works.</h2>
+            <p>
+              Binder Builder already has a stronger angle than a normal card checklist.
+              It is a visual binder tool first, but it still gives collectors real
+              tracking value through set progress and owned-card marking.
+            </p>
+            <p>
+              Public sharing helps the product feel social and collectible, and the
+              live support for Pokemon, Magic, and One Piece makes the platform feel
+              broader than a single-game project. The main site at
+              <a href="https://binder-builder.co.uk">binder-builder.co.uk</a> is the
+              primary destination for the live experience.
+            </p>
+          </div>
+          <div class="card">
+            <strong>Suggested Roadmap</strong>
+            <h3>Clear next steps based on what the current code already points toward.</h3>
+            <ul>
+              <li>Bring queued TCG hubs like Yu-Gi-Oh! and Lorcana fully live.</li>
+              <li>Expand binder editing with more templates, presets, and page management tools.</li>
+              <li>Push saved binders and account-level tracking further into a full workspace.</li>
+              <li>Deepen public binder discovery with stronger creator pages and archive flows.</li>
+              <li>Add better import and export flows for binders and owned-card tracking.</li>
+              <li>Create more social-ready assets for TikTok and Instagram sharing.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <footer>
+        <div class="footer-card">
+          <div class="eyebrow">Follow And Tag</div>
+          <h2>Show the pages people are proud to share.</h2>
+          <p class="footer-copy">
+            Built a page you are proud of? Share your binder layouts, collection
+            progress, pickups, and themed spreads, then tag Binder Builder so the
+            community can see them.
+          </p>
+          <div class="actions">
+            <a class="button button-primary" href="https://binder-builder.co.uk" target="_blank" rel="noopener">
+              Open the website
+            </a>
+            <a class="button button-secondary" href="https://www.tiktok.com/@binder.builder.tcg" target="_blank" rel="noopener">
+              Visit TikTok
+            </a>
+            <a class="button button-secondary" href="https://www.instagram.com/binder.builder/" target="_blank" rel="noopener">
+              Visit Instagram
+            </a>
+          </div>
+        </div>
+      </footer>
+    </main>
+  </body>
+</html>
