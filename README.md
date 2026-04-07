@@ -3,11 +3,11 @@
 Binder Builder is a multi-TCG workspace for building binder layouts, tracking owned cards inside set archives, and
 sharing polished binder pages with the community.
 
-[![Website](https://img.shields.io/badge/Website-binderbuilder.app-1f6feb?style=for-the-badge)](https://binder-builder.co.uk)
+[![Website](https://img.shields.io/badge/Website-binder--builder.co.uk-1f6feb?style=for-the-badge)](https://binder-builder.co.uk)
 [![TikTok](https://img.shields.io/badge/TikTok-@binder.builder.tcg-000000?style=for-the-badge)](https://www.tiktok.com/@binder.builder.tcg)
 [![Instagram](https://img.shields.io/badge/Instagram-@binder.builder-E4405F?style=for-the-badge)](https://www.instagram.com/binder.builder/)
 
-[Visit the website](https://binderbuilder.app) | [TikTok: @binder.builder.tcg](https://www.tiktok.com/@binder.builder.tcg) | [Instagram: @binder.builder](https://www.instagram.com/binder.builder/)
+[Visit the website](https://binder-builder.co.uk) | [TikTok: @binder.builder.tcg](https://www.tiktok.com/@binder.builder.tcg) | [Instagram: @binder.builder](https://www.instagram.com/binder.builder/)
 
 ![img.png](img.png)
 
@@ -87,7 +87,7 @@ Use a short CTA like this around the social links:
 > Built a page you are proud of? Share your binder layouts, collection progress, pickups, and themed spreads, then tag
 > Binder Builder so the community can see them.
 
-- Website: [binder-builder](https://binder-builder.co.uk)
+- Website: [binder-builder.co.uk](https://binder-builder.co.uk)
 - TikTok: [@binder.builder.tcg](https://www.tiktok.com/@binder.builder.tcg)
 - Instagram: [@binder.builder](https://www.instagram.com/binder.builder/)
 
